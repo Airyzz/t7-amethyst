@@ -184,6 +184,15 @@ namespace client_patches
 			// Don't modify process priority
 			utils::hook::nop(0x142334C98_g, 6);
 
+			// For no reason, multiplayer demos turn off after the first kill
+			{
+				// nop CCS_ValidateChecksums for mp demo 
+				utils::hook::nop(0x141365159_g, 5);
+
+				// nop  if ( target < 0 || target >= com_maxclients )
+				utils::hook::nop(0x1407F2055_g, 6);
+				utils::hook::nop(0x1407F205D_g, 2);
+			}
 			// Kill microphones for now
 			utils::hook::set(0x15AAE9254_g, mixer_open_stub);
 
