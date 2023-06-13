@@ -58,9 +58,35 @@ namespace demonware
 			std::string path = get_file_path(packet);
 			if (path.empty())
 				return;
-			std::ostringstream result;
+
 			std::ifstream ifs(path.data(), std::ios::binary);
+
+			size_t range_pos = packet.find("range: bytes=");
+			if (range_pos != std::string::npos) {
+				size_t eq_pos = packet.find("=", range_pos);
+				size_t dash_pos = packet.find("-", range_pos);
+				size_t crlf_pos = packet.find("\r\n", range_pos);
+				if (eq_pos != std::string::npos && dash_pos != std::string::npos && crlf_pos != std::string::npos) {
+					std::string start_str = packet.substr(eq_pos + 1, dash_pos - eq_pos - 1);
+					std::string end_str = packet.substr(dash_pos + 1, crlf_pos - dash_pos - 1);
+					size_t start = std::stoul(start_str);
+					size_t end = std::stoul(end_str);
+					if (start > end) {
+						return;
+					}
+					std::string content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
+					std::string range_content = content.substr(start, end - start + 1);
+					std::ostringstream result;
+					result << "HTTP/1.1 206 Partial Content\r\nContent-Range: bytes " << start << "-" << end << "/" << content.size() << "\r\nContent-Length: " << range_content.size() << req_end << range_content;
+					raw_reply reply(result.str());
+					this->send_reply(&reply);
+					return;
+				}
+			}
+
+			std::ostringstream result;
 			std::string content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
+
 			result << "HTTP/1.1 200 OK\r\nContent-Length: " << content.size() << req_end << content;
 
 			raw_reply reply(result.str());
