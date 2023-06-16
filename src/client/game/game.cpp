@@ -70,6 +70,9 @@ namespace game
 
 	std::filesystem::path get_appdata_path()
 	{
+#ifdef DEV_BUILD
+		return std::filesystem::current_path() / "data";
+#endif
 		static const auto appdata_path = []
 		{
 			PWSTR path;
