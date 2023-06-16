@@ -6,8 +6,6 @@ namespace demonware
 	{
 	public:
 		bdPooledStorage();
-
-	private:
 		void getPooledMetaDataByID(service_server* server, byte_buffer* buffer) const;
 		void _preUpload(service_server* server, byte_buffer* buffer) const;
 		void _postUploadFile(service_server* server, byte_buffer* buffer) const;

@@ -11,7 +11,18 @@ namespace demonware
 		this->register_task(2, &bdContentStreaming::unk2);
 		this->register_task(14, &bdContentStreaming::list_all_publisher_files);
 		this->register_task(3, &bdContentStreaming::idk);
-		this->register_task(19, &bdContentStreaming::_preDownloadSummary);
+
+		this->register_task(1, &bdPooledStorage::getPooledMetaDataByID);
+		this->register_task(5, &bdPooledStorage::_preUpload);
+		this->register_task(6, &bdPooledStorage::_postUploadFile);
+		this->register_task(8, &bdPooledStorage::remove);
+		this->register_task(9, &bdPooledStorage::_preDownload);
+		this->register_task(17, &bdPooledStorage::_preUploadSummary);
+		this->register_task(18, &bdPooledStorage::_postUploadSummary);
+		this->register_task(19, &bdPooledStorage::_preDownloadSummary);
+		this->register_task(20, &bdPooledStorage::_preUploadMultiPart);
+		this->register_task(21, &bdPooledStorage::_postUploadMultiPart);
+		this->register_task(22, &bdPooledStorage::_preDownloadMultiPart);
 	}
 
 	void bdContentStreaming::idk(service_server* server, byte_buffer* /*buffer*/) const
