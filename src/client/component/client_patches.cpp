@@ -45,6 +45,7 @@ namespace client_patches
 
 		void preload_map_stub(int local_client_num, const char* mapname, const char* gametype)
 		{
+			utils::hook::copy_string(0x1567D9A24_g,mapname);
 			game::Com_GametypeSettings_SetGametype(gametype, true);
 			stop_intro_if_needed();
 			preload_map_hook.invoke(local_client_num, mapname, gametype);
