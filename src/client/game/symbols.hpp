@@ -266,6 +266,8 @@ namespace game
 
 	WEAK symbol<Join> s_join{0x15574A640};
 
+	WEAK symbol<char> g_map_name{0x1567D9A24};
+
 	WEAK symbol<char> s_dvarPool{0x157AC6220, 0x14A3CB620};
 	WEAK symbol<int> g_dvarCount{0x157AC61CC, 0x14A3CB5FC};
 
