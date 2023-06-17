@@ -13,6 +13,9 @@ namespace branding
 	{
 		void draw_branding()
 		{
+#ifdef EDITING_BUILD
+			return;
+#else
 			constexpr auto x = 4;
 			constexpr auto y = 0;
 			constexpr auto scale = 0.45f;
@@ -24,6 +27,7 @@ namespace branding
 			game::R_AddCmdDrawText("T7x: " VERSION, std::numeric_limits<int>::max(), font, static_cast<float>(x),
 			                       y + static_cast<float>(font[2]) * scale,
 			                       scale, scale, 0.0f, color, game::ITEM_TEXTSTYLE_NORMAL);
+#endif
 		}
 
 		const char* get_ingame_console_prefix_stub()
