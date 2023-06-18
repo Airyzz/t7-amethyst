@@ -9,12 +9,12 @@ namespace demonware
 	bdContentStreaming::bdContentStreaming() : service(50, "bdContentStreaming")
 	{
 		this->register_task(2, &bdContentStreaming::unk2);
-		this->register_task(14, &bdContentStreaming::list_all_publisher_files);
+		this->register_task(14, &bdContentStreaming::list_files_by_owners);
 		this->register_task(3, &bdContentStreaming::idk);
+		this->register_task(5, &bdContentStreaming::_preUpload);
+		this->register_task(6, &bdContentStreaming::_postUploadFile);
 
 		this->register_task(1, &bdPooledStorage::getPooledMetaDataByID);
-		this->register_task(5, &bdPooledStorage::_preUpload);
-		this->register_task(6, &bdPooledStorage::_postUploadFile);
 		this->register_task(8, &bdPooledStorage::remove);
 		this->register_task(9, &bdPooledStorage::_preDownload);
 		this->register_task(17, &bdPooledStorage::_preUploadSummary);
@@ -25,6 +25,54 @@ namespace demonware
 		this->register_task(22, &bdPooledStorage::_preDownloadMultiPart);
 	}
 
+	void bdContentStreaming::_postUploadFile(service_server* server, byte_buffer* buffer) const
+	{
+		utils::io::write_file(demo_folder + "/" + "data" + ".data", buffer->get_buffer());
+
+		auto result = std::make_unique<bdFileID>();
+
+		result->m_fileID = 1;
+		auto reply = server->create_reply(this->task_id());
+		reply.add(result);
+		reply.send();
+	}
+	void bdContentStreaming::_preUpload(service_server* server, byte_buffer* buffer) const
+	{
+		std::string filename;
+		buffer->read_string(&filename);
+
+		uint16_t fileslot;
+		buffer->read_uint16(&fileslot);
+
+		uint32_t fileSize;
+		buffer->read_uint32(&fileSize);
+
+		uint16_t category;
+		buffer->read_uint16(&category);
+
+		std::string checksum;
+		buffer->read_blob(&checksum);
+
+		std::string clientLocale;
+		buffer->read_string(&clientLocale);
+
+		std::random_device rd;
+		std::mt19937 gen(rd());
+
+		auto result = std::make_unique<bdURL>();
+
+		result->url = std::format("{}/cloud/{}/{}{}.{}", url_server, demo_folder, checksum, gen(), filename);
+
+		result->serverID = 0;
+		result->serverNPID = 1;
+		result->serverFilename = filename;
+
+		utils::io::write_file(demo_folder + "/" + (filename + ".data"), buffer->get_buffer());
+
+		auto reply = server->create_reply(this->task_id());
+		reply.add(result);
+		reply.send();
+	}
 	void bdContentStreaming::idk(service_server* server, byte_buffer* /*buffer*/) const
 	{
 		// TODO: Read data as soon as needed
@@ -57,7 +105,7 @@ namespace demonware
 		reply.send();
 	}
 
-	void bdContentStreaming::list_all_publisher_files(service_server* server, byte_buffer* buffer) const
+	void bdContentStreaming::list_files_by_owners(service_server* server, byte_buffer* buffer) const
 	{
 		std::uint32_t start_date;
 		buffer->read_uint32(&start_date);

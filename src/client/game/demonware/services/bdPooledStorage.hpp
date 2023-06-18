@@ -19,6 +19,7 @@ namespace demonware
 		void _preDownloadMultiPart(service_server* server, byte_buffer* buffer) const;
 	};
 	const static std::string demo_folder = "boiii_players/user/demos";
+	const static std::string url_server = "http://localhost";
 
 	std::vector<std::string> scan_folder_demo();
 }

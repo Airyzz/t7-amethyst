@@ -9,7 +9,6 @@
 namespace demonware
 {
 	static std::string mem;
-	static std::string url_server = "http://localhost";
 	bdPooledStorage::bdPooledStorage() : service(58, "bdPooledStorage")
 	{
 		this->register_task(1, &bdPooledStorage::getPooledMetaDataByID);
@@ -140,7 +139,7 @@ namespace demonware
 		if (game::isModLoaded())
 		{
 			std::string mod = workshop::get_mod_publisher_id();
-			mod += "/" + workshop::get_mod_resized_name();
+			mod += "/" + workshop::get_mod_name();
 			utils::io::write_file((demo_folder + "/" + filename + ".mod"), mod);
 		}
 	}
