@@ -2,6 +2,9 @@
 #include "../services.hpp"
 #include <codecvt>
 #include <utils/io.hpp>
+#include <game/game.hpp>
+#include <component/workshop.hpp>
+
 
 namespace demonware
 {
@@ -66,6 +69,11 @@ namespace demonware
 		result->m_ownerName = "redacted";
 		result->m_fileName = demoFileName;
 
+		if (utils::io::file_exists(demoFilePath + ".mod"))
+		{
+			result->m_ownerName = "mod " + utils::io::read_file(demoFilePath + ".mod");
+		}
+
 		std::ifstream demoFileTags(demoFilePath + ".tags");
 		if (demoFileTags.is_open()) {
 			uint32_t numTags = 0;
@@ -128,6 +136,13 @@ namespace demonware
 		auto reply = server->create_reply(this->task_id());
 		reply.add(result);
 		reply.send();
+
+		if (game::isModLoaded())
+		{
+			std::string mod = workshop::get_mod_publisher_id();
+			mod += "/" + workshop::get_mod_resized_name();
+			utils::io::write_file((demo_folder + "/" + filename + ".mod"), mod);
+		}
 	}
 
 	void bdPooledStorage::_postUploadFile(service_server* server, byte_buffer* buffer) const
@@ -156,6 +171,7 @@ namespace demonware
 		buffer->read_uint64(&fileid);
 		auto result = getMetaDataByID(fileid);
 		auto reply = server->create_reply(this->task_id());
+
 		reply.add(result);
 		reply.send();
 	}

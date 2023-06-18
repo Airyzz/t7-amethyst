@@ -47,6 +47,7 @@ namespace client_patches
 		{
 			if (game::isModLoaded())
 			{
+				//for Theater TODO
 				std::filesystem::path path_to_map_folder = "usermaps";
 				if (std::filesystem::exists(path_to_map_folder / mapname)) {
 					utils::hook::copy_string(0x1567D9A24_g, mapname);
