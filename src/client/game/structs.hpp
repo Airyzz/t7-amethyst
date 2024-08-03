@@ -706,8 +706,9 @@ namespace game
 		DVAR_SAVED = 1 << 6,
 		DVAR_INIT = 1 << 7,
 		DVAR_CHEAT = 1 << 8,
-		//DVAR_UNKNOWN = 1 << 9,
+		DVAR_UNKNOWN = 1 << 9,
 		DVAR_EXTERNAL = 1 << 10,
+		DVAR_CHANGEABLE_RESET = 1 << 12,
 		//DVAR_UNKNOWN3x = 1 << 11-13,
 		DVAR_SESSIONMODE = 1 << 15
 	};

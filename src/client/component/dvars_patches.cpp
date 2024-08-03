@@ -13,7 +13,7 @@ namespace dvars_patches
 	{
 		void patch_dvars()
 		{
-			(void)game::register_sessionmode_dvar_bool("com_pauseSupported", !game::is_server(), game::DVAR_SERVERINFO, "Whether pause is supported by the game mode");
+			(void)game::register_sessionmode_dvar_bool("com_pauseSupported", !game::is_server(), game::DVAR_SERVERINFO, "Whether is pause is ever supported by the game mode");
 		}
 
 		void patch_flags()
@@ -25,6 +25,18 @@ namespace dvars_patches
 				game::dvar_set_flags("gpad_stick_deadzone_max", game::DVAR_ARCHIVE);
 				game::dvar_set_flags("gpad_stick_deadzone_min", game::DVAR_ARCHIVE);
 				game::dvar_set_flags("cg_drawLagometer", game::DVAR_ARCHIVE);
+				game::dvar_set_flags("sv_cheats", game::DVAR_ARCHIVE);
+
+				for (int i = 0; i < *game::g_dvarCount; ++i)
+				{
+					const auto* dvar = reinterpret_cast<const game::dvar_t*>(&game::s_dvarPool[sizeof(game::dvar_t) * i]);
+					if (!dvar->debugName) continue;
+					if (dvar->flags & (game::DVAR_CHANGEABLE_RESET | game::DVAR_UNKNOWN))
+					{
+						game::dvar_remove_flags(dvar->debugName, game::DVAR_CHANGEABLE_RESET | game::DVAR_UNKNOWN);
+					}
+				}
+
 			}
 
 			scheduler::execute(scheduler::pipeline::dvars_flags_patched);
@@ -59,23 +71,13 @@ namespace dvars_patches
 			scheduler::once(patch_dvars, scheduler::pipeline::main);
 			scheduler::once(patch_flags, scheduler::pipeline::main);
 
-			if (game::is_client()) this->patch_client();
-			else this->patch_server();
-		}
+			if (game::is_server())
+			{
+				return;
+			}
 
-		static void patch_client()
-		{
 			// toggle ADS dof based on r_dof_enable
 			utils::hook::jump(0x141116EBB_g, utils::hook::assemble(dof_enabled_stub));
-		}
-
-		static void patch_server()
-		{
-			// Set the max value of 'sv_network_fps'
-			utils::hook::set<uint32_t>(0x140534FE7_g, 1000);
-
-			// Set the flag of 'sv_network_fps'
-			utils::hook::set<uint32_t>(0x140534FD8_g, game::DVAR_NONE);
 		}
 	};
 }
