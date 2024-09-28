@@ -11,11 +11,19 @@
 #include <component/command.hpp>
 #include <thread>
 #include <utils/string.hpp>
+#include "scheduler.hpp"
 namespace demo_patches
 {
 	namespace
 	{
+		void patch_dvars()
+		{
+			auto demo_recordingrate = game::Dvar_FindVar("demo_recordingrate");
+			demo_recordingrate->domain.integer.min = 1;
 
+			game::dvar_add_flags("demo_recordingrate", game::DVAR_ARCHIVE);
+			game::dvar_add_flags("demo_enableSvBandwidthLimitThrottle", game::DVAR_ARCHIVE);
+		}
 	}
 
 	class component final : public client_component
@@ -27,6 +35,7 @@ namespace demo_patches
 
 		void post_unpack() override
 		{
+			scheduler::once(patch_dvars, scheduler::pipeline::main);
 
 			// For no reason, multiplayer demos turn off after the first kill
 			// nop CCS_ValidateChecksums for mp demo 
