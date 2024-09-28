@@ -16,6 +16,8 @@ namespace demo_patches
 {
 	namespace
 	{
+		utils::hook::detour LiveFileshare_AddTag_hook;
+
 		void patch_dvars()
 		{
 			auto demo_recordingrate = game::Dvar_FindVar("demo_recordingrate");
@@ -23,6 +25,20 @@ namespace demo_patches
 
 			game::dvar_add_flags("demo_recordingrate", game::DVAR_ARCHIVE);
 			game::dvar_add_flags("demo_enableSvBandwidthLimitThrottle", game::DVAR_ARCHIVE);
+		}
+
+		__int64 LiveFileshare_AddTag_stub(uint64_t a1, uint64_t a2, int* a3, uint64_t a4, int a5) {
+			uint64_t currentTagCount = *a3;
+
+			if (a2 == UINT64_MAX)
+				a2 = 0;
+
+			if (currentTagCount + 1 <= a5) {
+				*reinterpret_cast<uint64_t*>((currentTagCount << 6) + a4 + 32) = a1;
+				*reinterpret_cast<uint64_t*>((currentTagCount << 6) + a4 + 40) = a2;
+				++(*a3);
+			}
+			return currentTagCount + 1;
 		}
 	}
 
@@ -44,6 +60,8 @@ namespace demo_patches
 			// nop  if ( target < 0 || target >= com_maxclients )
 			utils::hook::nop(0x1407F2055_g, 6);
 			utils::hook::nop(0x1407F205D_g, 2);
+
+			LiveFileshare_AddTag_hook.create(0x141DEF150_g, LiveFileshare_AddTag_stub);
 		}
 	};
 }
