@@ -27,10 +27,23 @@ namespace patches
 			game::Com_Error(game::ERROR_SCRIPT_DROP, "%s", buffer);
 		}
 
+		int get_num_players() {
+			int num_connected_players = 0;
+
+			// Have to do it this way, because LobbyHost_GetClientCount is incorrect, as the lobby system was removed?
+			// Is there a better way to do this?
+			for (int i = 0; i < game::get_max_client_count(); i++) {
+				if (game::access_connected_client(i, [](game::client_s& client) {})) {
+					num_connected_players += 1;
+				}
+			}
+
+			return num_connected_players;
+		}
+
 		void scr_get_num_expected_players()
 		{
-			auto expected_players = game::LobbyHost_GetClientCount(game::LOBBY_TYPE_GAME,
-			                                                       game::LOBBY_CLIENT_TYPE_ALL);
+			int expected_players = get_num_players();
 
 			const auto mode = game::Com_SessionMode_GetMode();
 			if ((mode == game::MODE_ZOMBIES || mode == game::MODE_CAMPAIGN))
@@ -40,6 +53,14 @@ namespace patches
 					expected_players = min_players;
 				}
 			}
+
+			const auto num_expected_players = std::max(1, expected_players);
+			game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, num_expected_players);
+		}
+
+		void scr_get_num_connected_players()
+		{
+			int expected_players = get_num_players();
 
 			const auto num_expected_players = std::max(1, expected_players);
 			game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, num_expected_players);
@@ -78,6 +99,11 @@ namespace patches
 
 			lobby_min_players = game::register_dvar_int("lobby_min_players", 0, 0, 8, game::DVAR_NONE, "");
 			utils::hook::jump(game::select(0x141A7BCF0, 0x1402CB900), scr_get_num_expected_players, true);
+
+			// TODO: Make this work for dedi as well
+			if (!game::is_server()) {
+				utils::hook::jump(0x141A7BC90_g, scr_get_num_connected_players, true);
+			}
 		}
 	};
 }
