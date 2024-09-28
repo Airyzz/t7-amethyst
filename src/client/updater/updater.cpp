@@ -8,6 +8,8 @@ namespace updater
 {
 	void run(const std::filesystem::path& base)
 	{
+		return;
+
 		const auto self = utils::nt::library::get_by_address(run);
 		const auto self_file = self.get_path();
 
