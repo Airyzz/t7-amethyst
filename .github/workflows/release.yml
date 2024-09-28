@@ -40,7 +40,7 @@ jobs:
           mkdir t7x
           move .\build\bin\x64\Release\t7x.pdb .\t7x\t7x.pdb
           move .\build\bin\x64\Release\t7x.exe .\t7x\t7x.exe
-          xcopy /S /I .\data .\t7x\t7x
+          xcopy /S /I .\data .\t7x\t7x\data
           tar -a -c -f t7x.zip -C .\t7x *
 
       - name: Upload to release
