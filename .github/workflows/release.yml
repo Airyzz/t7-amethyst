@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  release:
+    types:
+      - created
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-2022
+    steps:
+      - name: Check out files
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+          # NOTE - If LFS ever starts getting used during builds, switch this to true!
+          lfs: false
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.3.1
+
+      - name: Generate project files
+        run: tools/premake5 vs2022
+
+      - name: Set up problem matching
+        uses: ammaraskar/msvc-problem-matcher@master
+
+      - name: Build Release
+        run: msbuild /m /v:minimal /p:Configuration=Release /p:Platform=x64 build/t7x.sln
+
+      - name: Prep Files
+        run: |
+          mkdir t7x
+          move .\build\bin\x64\Release\t7x.pdb .\t7x\t7x.pdb
+          move .\build\bin\x64\Release\t7x.exe .\t7x\t7x.exe
+          xcopy /S /I .\data .\t7x\t7x
+          tar -a -c -f t7x.zip -C .\t7x *
+
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: .\t7x.zip
+          asset_name: t7x.zip
+          asset_content_type: application/zip
