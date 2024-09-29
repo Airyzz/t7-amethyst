@@ -11,6 +11,7 @@ I just wanted to make a client which suits my own needs, and felt it would be wo
 
 - Working Theater Mode
 - Fixed `fast_restart` command
+- Fixes issue where workshop maps dont load unless steam is in offline mode
 
 ## Writeups & Articles
 
