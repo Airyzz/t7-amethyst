@@ -10,6 +10,8 @@
 #include <utils/io.hpp>
 
 #include <mmeapi.h>
+#include "command.hpp"
+#include "workshop.hpp"
 
 namespace client_patches
 {
@@ -45,6 +47,21 @@ namespace client_patches
 
 		void preload_map_stub(int local_client_num, const char* mapname, const char* gametype)
 		{
+			if (game::isModLoaded())
+			{
+				//for Theater TODO
+				std::filesystem::path path_to_map_folder = "usermaps";
+				if (std::filesystem::exists(path_to_map_folder / mapname)) {
+					utils::hook::copy_string(0x1567D9A24_g, mapname);
+				}
+				else
+				{
+					auto id = workshop::get_usermap_publisher_id(mapname);
+
+					utils::hook::copy_string(0x1567D9A24_g, id.c_str());
+					utils::hook::copy_string(0x1567D9A04_g, mapname);
+				}
+			}
 			game::Com_GametypeSettings_SetGametype(gametype, true);
 			stop_intro_if_needed();
 			preload_map_hook.invoke(local_client_num, mapname, gametype);
@@ -184,6 +201,15 @@ namespace client_patches
 			// Don't modify process priority
 			utils::hook::nop(0x142334C98_g, 6);
 
+			// For no reason, multiplayer demos turn off after the first kill
+			{
+				// nop CCS_ValidateChecksums for mp demo 
+				utils::hook::nop(0x141365159_g, 5);
+
+				// nop  if ( target < 0 || target >= com_maxclients )
+				utils::hook::nop(0x1407F2055_g, 6);
+				utils::hook::nop(0x1407F205D_g, 2);
+			}
 			// Kill microphones for now
 			utils::hook::set(0x15AAE9254_g, mixer_open_stub);
 

@@ -172,6 +172,18 @@ namespace workshop
 
 	std::string get_mod_resized_name()
 	{
+		std::string mod_name = get_mod_name();
+
+		if (mod_name.size() > 31)
+		{
+			mod_name.resize(31);
+		}
+
+		return mod_name;
+	}
+
+	std::string get_mod_name()
+	{
 		const std::string loaded_mod_id = game::getPublisherIdFromLoadedMod();
 
 		if (loaded_mod_id == "usermaps" || loaded_mod_id.empty())
@@ -191,12 +203,6 @@ namespace workshop
 				break;
 			}
 		}
-
-		if (mod_name.size() > 31)
-		{
-			mod_name.resize(31);
-		}
-
 		return mod_name;
 	}
 

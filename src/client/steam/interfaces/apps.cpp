@@ -41,7 +41,8 @@ namespace steam
 		static const auto has_campaign = std::filesystem::exists(::utils::nt::library{}.get_folder() / "zone/cp_common.xpak");
 		static const auto has_multiplayer = std::filesystem::exists(::utils::nt::library{}.get_folder() / "zone/mp_common.xpak");
 		static const auto has_zombies = std::filesystem::exists(::utils::nt::library{}.get_folder() / "zone/zm_common.xpak");
-		return appID == 366840 ? has_campaign
+
+		return appID == 366840 ? true
 			: appID == 366841 ? has_multiplayer
 			: appID == 366842 ? has_zombies
 			: true;

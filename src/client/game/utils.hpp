@@ -15,6 +15,7 @@ namespace game
 	[[nodiscard]] const dvar_t* register_dvar_string(const char* dvar_name, const char* value, unsigned int flags, const char* description);
 
 	void dvar_add_flags(const char* dvar, unsigned int flags);
+	void dvar_remove_flags(const char* dvar, unsigned int flags);
 	void dvar_set_flags(const char* dvar_name, unsigned int flags);
 
 	[[nodiscard]] bool is_server_running();

@@ -11,6 +11,10 @@ namespace extension
 		component()
 		{
 			this->extension_ = utils::nt::library::load(game::get_appdata_path() / "ext.dll");
+
+#ifdef EDITING_BUILD
+			utils::nt::library::load("reshade64.dll");
+#endif
 		}
 
 		~component() override
