@@ -1,7 +1,16 @@
-# What is T7x ☄️
+# What is T7 Amethyst 🔮
 
-T7x is a game modification for Call of Duty: Black Ops 3.  
-The Steam version of Black Ops 3 is required to be owned and installed for T7x to work. You can get it from <a href="https://store.steampowered.com/app/311210/Call_of_Duty_Black_Ops_III/">here</a>.
+T7 Amethyst is a game modification for Call of Duty: Black Ops 3.  
+The Steam version of Black Ops 3 is required to be owned and installed for T7a to work. You can get it from <a href="https://store.steampowered.com/app/311210/Call_of_Duty_Black_Ops_III/">here</a>.
+
+## Why Another BOIII Clone?
+
+I just wanted to make a client which suits my own needs, and felt it would be worth sharing somewhere. This is not intended to be a large project, nor will it be frequently updated / maintained. 
+
+### Differences between Amethyst and T7x / Ezz Boiii
+
+- Working Theater Mode
+- Fixed `fast_restart` command
 
 ## Writeups & Articles
 
@@ -11,6 +20,8 @@ The Steam version of Black Ops 3 is required to be owned and installed for T7x t
 ## Credits
 
 - Thanks to <a href="https://github.com/shiversoftdev">@shiversoftdev</a> for providing the fixes from his <a href="https://github.com/shiversoftdev/t7patch">community patch</a>
+- Thanks to <a href="https://git.alterware.dev/alterware">alterware</a> for their effort on continuing development
+- Thanks to <a href="https://github.com/ViktorSMI">@ViktorSMI</a> for developing the theater mode server implementation
 
 ## Disclaimer
 

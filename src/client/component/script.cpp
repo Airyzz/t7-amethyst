@@ -35,7 +35,7 @@ namespace script
 		void load_script(std::string& name, const std::string& data, const bool is_custom)
 		{
 			const auto appdata_path = (game::get_appdata_path() / "data/").generic_string();
-			const auto host_path = (utils::nt::library{}.get_folder() / "t7x/").generic_string();
+			const auto host_path = (utils::nt::library{}.get_folder() / "t7a/").generic_string();
 
 			auto i = name.find(appdata_path);
 			if (i != std::string::npos)
@@ -134,12 +134,12 @@ namespace script
 			const utils::nt::library host{};
 
 			const auto data_folder = game::get_appdata_path() / "data";
-			const auto t7x_folder = host.get_folder() / "t7x";
+			const auto t7a_folder = host.get_folder() / "t7a";
 
-			const auto load = [&data_folder, &t7x_folder](const std::filesystem::path& folder, const bool is_custom)
+			const auto load = [&data_folder, &t7a_folder](const std::filesystem::path& folder, const bool is_custom)
 			{
 				load_scripts_folder((data_folder / folder).string(), is_custom);
-				load_scripts_folder((t7x_folder / folder).string(), is_custom);
+				load_scripts_folder((t7a_folder / folder).string(), is_custom);
 			};
 
 			// scripts folder is for overriding stock scripts the game uses

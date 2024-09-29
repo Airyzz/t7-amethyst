@@ -42,7 +42,7 @@ jobs:
         uses: ammaraskar/msvc-problem-matcher@master
 
       - name: Build ${{matrix.configuration}}
-        run: msbuild /m /v:minimal /p:Configuration=${{matrix.configuration}} /p:Platform=x64 build/t7x.sln
+        run: msbuild /m /v:minimal /p:Configuration=${{matrix.configuration}} /p:Platform=x64 build/t7a.sln
 
       - name: Upload ${{matrix.configuration}} symbols
         if: matrix.configuration == 'Release' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
@@ -50,7 +50,7 @@ jobs:
         with:
           name: ${{matrix.configuration}} Symbols
           path: |
-            build/bin/x64/${{matrix.configuration}}/t7x.pdb
+            build/bin/x64/${{matrix.configuration}}/t7a.pdb
 
       - name: Upload ${{matrix.configuration}} binary
         if: matrix.configuration == 'Release' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
@@ -58,7 +58,7 @@ jobs:
         with:
           name: ${{matrix.configuration}} Binary
           path: |
-            build/bin/x64/${{matrix.configuration}}/t7x.exe
+            build/bin/x64/${{matrix.configuration}}/t7a.exe
 
       - name: Upload ${{matrix.configuration}} data artifacts
         if: matrix.configuration == 'Release' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
