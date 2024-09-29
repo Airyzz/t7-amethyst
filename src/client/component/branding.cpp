@@ -24,7 +24,7 @@ namespace branding
 			const auto* font = reinterpret_cast<uint32_t*(*)()>(0x141CAC8E0_g)();
 			if (!font) return;
 
-			game::R_AddCmdDrawText("T7x: " VERSION, std::numeric_limits<int>::max(), font, static_cast<float>(x),
+			game::R_AddCmdDrawText("T7a: " VERSION, std::numeric_limits<int>::max(), font, static_cast<float>(x),
 			                       y + static_cast<float>(font[2]) * scale,
 			                       scale, scale, 0.0f, color, game::ITEM_TEXTSTYLE_NORMAL);
 #endif
@@ -32,7 +32,7 @@ namespace branding
 
 		const char* get_ingame_console_prefix_stub()
 		{
-			return "T7x> ";
+			return "T7a> ";
 		}
 	}
 
@@ -43,7 +43,7 @@ namespace branding
 			scheduler::loop(draw_branding, scheduler::renderer);
 
 			// Change window title prefix
-			utils::hook::copy_string(0x14303F3D8_g, "T7x");
+			utils::hook::copy_string(0x14303F3D8_g, "T7a");
 
 			// Change ingame console prefix
 			utils::hook::call(0x141339970_g, get_ingame_console_prefix_stub);

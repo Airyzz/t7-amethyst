@@ -33,15 +33,15 @@ jobs:
         uses: ammaraskar/msvc-problem-matcher@master
 
       - name: Build Release
-        run: msbuild /m /v:minimal /p:Configuration=Release /p:Platform=x64 build/t7x.sln
+        run: msbuild /m /v:minimal /p:Configuration=Release /p:Platform=x64 build/t7a.sln
 
       - name: Prep Files
         run: |
-          mkdir t7x
-          move .\build\bin\x64\Release\t7x.pdb .\t7x\t7x.pdb
-          move .\build\bin\x64\Release\t7x.exe .\t7x\t7x.exe
-          xcopy /S /I .\data .\t7x\t7x\data
-          tar -a -c -f t7x.zip -C .\t7x *
+          mkdir t7a
+          move .\build\bin\x64\Release\t7a.pdb .\t7a\t7a.pdb
+          move .\build\bin\x64\Release\t7a.exe .\t7a\t7a.exe
+          xcopy /S /I .\data .\t7a\t7a\data
+          tar -a -c -f t7a.zip -C .\t7a *
 
       - name: Upload to release
         if: github.event_name == 'release'
@@ -50,6 +50,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: .\t7x.zip
-          asset_name: t7x.zip
+          asset_path: .\t7a.zip
+          asset_name: t7-amethyst.zip
           asset_content_type: application/zip

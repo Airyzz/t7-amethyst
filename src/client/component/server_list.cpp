@@ -93,7 +93,7 @@ namespace server_list
 
 		const char* get_favorite_servers_file_path()
 		{
-			return "t7x/players/user/favorite_servers.txt";
+			return "t7a/players/user/favorite_servers.txt";
 		}
 
 		void write_favorite_servers()

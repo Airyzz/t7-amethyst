@@ -224,7 +224,7 @@ namespace steam_proxy
 
 		void post_unpack() override
 		{
-			const auto res = start_mod("\xF0\x9F\x92\x8E" " T7x"s, steam::SteamUtils()->GetAppID());
+			const auto res = start_mod("\xF0\x9F\x92\x8E" " T7a"s, steam::SteamUtils()->GetAppID());
 			evaluate_ownership_state(res);
 			clean_up_on_error();
 		}

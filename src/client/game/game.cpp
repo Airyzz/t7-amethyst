@@ -70,6 +70,6 @@ namespace game
 
 	std::filesystem::path get_appdata_path()
 	{
-		return std::filesystem::current_path() / "t7x";
+		return std::filesystem::current_path() / "t7a";
 	}
 }

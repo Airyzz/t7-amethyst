@@ -139,8 +139,8 @@ namespace console
 
 			char text[CONSOLE_BUFFER_SIZE]{0};
 
-			const auto* class_name = "T7x WinConsole";
-			const auto* window_name = game::is_server() ? "T7x Server" : "T7x Console";
+			const auto* class_name = "T7a WinConsole";
+			const auto* window_name = game::is_server() ? "T7a Server" : "T7a Console";
 
 			WNDCLASSA wnd_class{};
 			wnd_class.style = 0;

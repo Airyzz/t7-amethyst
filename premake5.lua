@@ -220,7 +220,7 @@ newaction {
 
 dependencies.load()
 
-workspace "t7x"
+workspace "t7a"
 	startproject "client"
 	location "./build"
 	objdir "%{wks.location}/obj"
@@ -284,7 +284,7 @@ project "client"
 	kind "WindowedApp"
 	language "C++"
 
-	targetname "t7x"
+	targetname "t7a"
 
 	pchheader "std_include.hpp"
 	pchsource "src/client/std_include.cpp"
