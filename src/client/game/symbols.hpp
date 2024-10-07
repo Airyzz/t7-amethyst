@@ -253,6 +253,10 @@ namespace game
 		0x1422E9410, 0x1405811E0
 	};
 
+	// Save Game
+	WEAK symbol<void*(MemoryFile* file, int size, char* buffer, bool errorOnOverflow, bool compressEnabled)> MemFile_CommonInit{ 0x01422D3AF0 };
+	WEAK symbol<void*(MemoryFile* file, bool a2, bool a3)> Migration_SaveData{ 0x140132100 };
+
 	// Variables
 	WEAK symbol<cmd_function_s> cmd_functions{0x15689DF58, 0x14946F860};
 	WEAK symbol<CmdArgs> sv_cmd_args{0x15689AE30, 0x14944C740};

@@ -1997,6 +1997,26 @@ namespace game
 		XAssetHeader header;
 	};
 
+	struct MemoryFile
+	{
+		byte* buffer;
+		int bufferSize;
+		int bytesUsed;
+		byte* careerStatsBuffer;
+		int cacheBufferUsed;
+		int segmentIndex;
+		int segmentStart;
+		int nonZeroCount;
+		int zeroCount;
+		bool errorOnOverflow;
+		bool memoryOverflow;
+		bool compress_enabled;
+		bool rle_enabled;
+		bool is_writing;
+		int cacheBufferAvail;
+		byte cacheBuffer[32760];
+	};
+
 	typedef void XAssetEnum(XAssetHeader, void*);
 
 #ifdef __cplusplus
