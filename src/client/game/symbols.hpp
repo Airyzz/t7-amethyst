@@ -39,6 +39,7 @@ namespace game
 	WEAK symbol<void(const char* gametype, bool loadDefaultSettings)> Com_GametypeSettings_SetGametype{
 		0x1420F5980
 	};
+
 	WEAK symbol<unsigned int(const char* settingName, bool getDefault)> Com_GametypeSettings_GetUInt{
 		0x1420F4E00, 0x1404FE5C0
 	};
@@ -252,6 +253,10 @@ namespace game
 	WEAK symbol<void(char* dest, size_t destsize, const char* src)> I_strcpy{
 		0x1422E9410, 0x1405811E0
 	};
+
+	// Save Game
+	WEAK symbol<void*(MemoryFile* file, int size, char* buffer, bool errorOnOverflow, bool compressEnabled)> MemFile_CommonInit{ 0x01422D3AF0 };
+	WEAK symbol<void*(MemoryFile* file, bool a2, bool a3)> G_SaveState{ 0x140132100 };
 
 	// Variables
 	WEAK symbol<cmd_function_s> cmd_functions{0x15689DF58, 0x14946F860};
