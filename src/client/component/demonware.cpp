@@ -304,6 +304,14 @@ namespace demonware
 					return len;
 				}
 
+				sockaddr_in in = *(sockaddr_in*)to;
+				u_short port = htons(in.sin_port);
+
+				// WTF are these connections? 
+				if (port == 40000 || port == 3074 || port == 44999 || port == 20000 || port == 10000) {
+					return len;
+				}
+
 				return sendto(s, buf, len, flags, to, tolen);
 			}
 
