@@ -33,6 +33,8 @@ namespace game
 	WEAK symbol<bool(eModes mode)> Com_SessionMode_IsMode{0x1420F7370};
 	WEAK symbol<int()> Com_SessionMode_GetMode{0x1420F6D30 , 0x1405002D0};
 	WEAK symbol<int()> Com_SessionMode_GetGameMode{0x1420F68B0, 0x1404FFE50};
+	WEAK symbol<const char* (const char*)> Com_GameInfo_GetMapRefCaps{ 0x1420F3860 };
+	WEAK symbol<const char* (const char*)> Com_GameInfo_GetGameTypeRefCaps{ 0x01420F3630 };
 	WEAK symbol<void(eNetworkModes networkMode)> Com_SessionMode_SetNetworkMode{0x1420F75B0, 0x140500B80};
 	WEAK symbol<eGameModes(eGameModes gameMode)> Com_SessionMode_SetGameMode{0x1420F7570, 0x140500B40};
 	WEAK symbol<eModes(eModes mode)> Com_SessionMode_SetMode{0x1420F7570};
@@ -178,6 +180,9 @@ namespace game
 	WEAK symbol<void(int localClientNumber, int errorcode, const char* errorMessage)> UI_OpenErrorPopupWithMessage{
 		0x14228DEE0
 	};
+
+
+	WEAK symbol<char* (const char* reference)> UI_SafeTranslateString { 0x014228ED50 };
 	WEAK symbol<void(bool frontend)> UI_CoD_Init{0x141F29010, 0x1404A0A50};
 	WEAK symbol<void()> UI_CoD_LobbyUI_Init{0x141F2BD80, 0x1404A1F50};
 	WEAK symbol<void()> UI_CoD_Shutdown{0x141F32E10, 0x0};
